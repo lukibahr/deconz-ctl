@@ -8,6 +8,8 @@ vars:
     sh: which golangci-lint
   GO: 
     sh: which go
+  GOOS:
+    sh: uname | sed "y/ABCDEFGHIJKLMNOPQRSTUVWXYZ/abcdefghijklmnopqrstuvwxyz/"
   GOARCH:
     sh: uname -m
  
@@ -42,8 +44,15 @@ tasks:
     preconditions:
       - sh: "[ '{{.GO}}' != '<no value>' ]"
         msg: "go executable not found"
+    vars:
+      VERSION: 1.0.0
     cmds:
       - |
-       CGO_ENABLED=0 GOOS=windows GOARCH={{.GOARCH}} go build -ldflags="-X 'github.com/lukibahr/deconz-ctl/cmd.buildVersion=v0.0.1' -X 'github.com/lukibahr/deconz-ctl/cmd.buildCommit=$(git rev-parse --short HEAD)'" -o releases/{{.GOARCH}}/deconz-ctl-{{.GOARCH}}.exe .
-       CGO_ENABLED=0 GOOS=darwin GOARCH={{.GOARCH}} go build -ldflags="-X 'github.com/lukibahr/deconz-ctl/cmd.buildVersion=v0.0.1' -X 'github.com/lukibahr/deconz-ctl/cmd.buildCommit=$(git rev-parse --short HEAD)'" -o releases/{{.GOARCH}}/deconz-ctl-{{.GOARCH}} .
+       CGO_ENABLED=0 GOOS={{.GOOS}} GOARCH={{.GOARCH}} go build -ldflags="-X 'github.com/lukibahr/deconz-ctl/cmd.buildVersion={{.VERSION}}' -X 'github.com/lukibahr/deconz-ctl/cmd.buildCommit=$(git rev-parse --short HEAD)'" -o releases/{{.GOOS}}/{{.GOARCH}}/deconz-ctl-{{.GOARCH}} .  
+    silent: false
+
+  cleanup:
+    desc: cleanup dirs
+    cmds:
+      - rm -rf ./releases
     silent: false

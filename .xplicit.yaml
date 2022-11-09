@@ -8,3 +8,5 @@ xplicit:
       description: ""
     - name: "cobra&viper setup"
       description: "command line tool with cobra and viper set up"
+    - name: Taskfile for a proper golang build
+      description: Taskfile for proper golang setup with build, test and lint
