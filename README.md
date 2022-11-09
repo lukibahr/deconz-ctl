@@ -24,7 +24,13 @@ and run:
 
 `docker run -it --rm -e DECONZ_API_KEY=$DECONZ_API_KEY -e DECONZ_API_URL=$DECONZ_API_URL ghcr.io/lukibahr/deconz-ctl:1.0.4 switch-on -d 5`
 
-The client is build with cobra.
+The client is build with cobra. You can either use command line parameters or environment variables:
+
+```zsh
+export DECONZ_API_KEY=
+export DECONZ_API_URL=http://<api-url>:port
+export DECONZ_DEVICE=#optional, can be supplied with -d option because this option might be more dynamic
+```
 
 ## Currently implemented functions
 
