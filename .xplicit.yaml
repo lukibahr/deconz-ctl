@@ -1,0 +1,10 @@
+xplicit:
+  case: 
+    - name: "goreleaser action with github actions and github docker registry"
+      description: ""
+    - name: "prometheus exporter with ldflags build info"
+      description: ""
+    - name: "cobra cli with multiple comands and subcommands"
+      description: ""
+    - name: "cobra&viper setup"
+      description: "command line tool with cobra and viper set up"

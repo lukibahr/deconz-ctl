@@ -1,0 +1,49 @@
+# I just wanted to give taskfile.dev another try. This is optional. Get task here https://taskfile.dev/#/
+# Next create a .env file
+ 
+version: '3'
+ 
+vars:
+  GOLANGCILINT:
+    sh: which golangci-lint
+  GO: 
+    sh: which go
+  GOARCH:
+    sh: uname -m
+ 
+tasks:
+  default:
+    cmds:
+      - task --list
+    silent: true
+ 
+  lint:
+    desc: Run golangci-lint on your sourcecode
+    preconditions:
+      - sh: "[ '{{.GOLANGCILINT}}' != '<no value>' ]"
+        msg: "golangci-lint executable not found"
+    cmds:
+      - |
+       golangci-lint run -v
+    silent: false
+ 
+  test:
+    desc: Run golangci-lint on your sourcecode
+    preconditions:
+      - sh: "[ '{{.GOLANGCILINT}}' != '<no value>' ]"
+        msg: "golangci-lint executable not found"
+    cmds:
+      - |
+       go test -v
+    silent: false
+
+  build:
+    desc: Build binary
+    preconditions:
+      - sh: "[ '{{.GO}}' != '<no value>' ]"
+        msg: "go executable not found"
+    cmds:
+      - |
+       CGO_ENABLED=0 GOOS=windows GOARCH={{.GOARCH}} go build -ldflags="-X 'github.com/lukibahr/deconz-ctl/cmd.buildVersion=v0.0.1' -X 'github.com/lukibahr/deconz-ctl/cmd.buildCommit=$(git rev-parse --short HEAD)'" -o releases/{{.GOARCH}}/deconz-ctl-{{.GOARCH}}.exe .
+       CGO_ENABLED=0 GOOS=darwin GOARCH={{.GOARCH}} go build -ldflags="-X 'github.com/lukibahr/deconz-ctl/cmd.buildVersion=v0.0.1' -X 'github.com/lukibahr/deconz-ctl/cmd.buildCommit=$(git rev-parse --short HEAD)'" -o releases/{{.GOARCH}}/deconz-ctl-{{.GOARCH}} .
+    silent: false
