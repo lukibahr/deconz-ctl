@@ -32,6 +32,12 @@ export DECONZ_API_URL=http://<api-url>:port
 export DECONZ_DEVICE=#optional, can be supplied with -d option because this option might be more dynamic
 ```
 
+## Linting
+
+In this project, I'm using revive for linting. Try it out!
+
+`revive -config revive.toml -formatter stylish ./...`
+
 ## Currently implemented functions
 
 - switch on and off a light by device id

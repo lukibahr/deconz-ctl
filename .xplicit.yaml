@@ -10,3 +10,5 @@ xplicit:
       description: "command line tool with cobra and viper set up"
     - name: Taskfile for a proper golang build
       description: Taskfile for proper golang setup with build, test and lint
+    - name: linting with revive
+      description: revive is a more configurable and faster go linter 

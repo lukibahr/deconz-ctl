@@ -56,3 +56,10 @@ tasks:
     cmds:
       - rm -rf ./releases
     silent: false
+
+  revive:
+    desc: lint golang with revive
+    cmds:
+      - revive -config revive.toml -formatter stylish ./...
+    silent: false
+
