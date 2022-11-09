@@ -1,33 +1,40 @@
 # deconz-ctl
 
-## base url
+deconz-ctl is a command line utility to control a deconz device via the [deconz REST API](https://dresden-elektronik.github.io/deconz-rest-doc/).
+Using deconz-ctl assumes you have properly set up a deconz device and installed lights and switches. Setting up the authentication for the REST API is documented [here](https://dresden-elektronik.github.io/deconz-rest-doc/getting_started/).
 
-- <http:////pi-aeng6eje.speedport.ip/api/$APIKEY/>
+> Note: This project is in early development.
 
-/api/<apikey>/lights/<id>/state
+## Installing the client
 
-```shell
-source .env
-curl -X PUT http://pi-aeng6eje.speedport.ip/api/$DECONZ_API_KEY/lights/5/state -d '{"on":true}'
-curl -X PUT http://pi-aeng6eje.speedport.ip/api/$DECONZ_API_KEY/lights/5/state -d '{"on":false}'
-```
+You can either:
 
-funtions:
+- download pre-built binaries from the releases page and move it to your `$PATH` variable
+- build the client by yourself using the `Taskfile.yaml`
+- use the supplied docker image
+- or install the client using `go install github.com/lukibahr/deconz-ctl` if you have golang installed
 
-- get configuration: <http://pi-aeng6eje.speedport.ip/api/$DECONZ_API_KEY/config>
-- list all lights: <http://pi-aeng6eje.speedport.ip/api/$DECONZ_API_KEY/lights>
-- list ligth: <http://pi-aeng6eje.speedport.ip/api/$DECONZ_API_KEY/lights/$id>
-- power on ligth: <http://pi-aeng6eje.speedport.ip/api/$DECONZ_API_KEY/lights/5/state> -d '{"on":true}'
-- power off light: <http://pi-aeng6eje.speedport.ip/api/$DECONZ_API_KEY/lights/5/state> -d '{"on":false}'
+## Using the client (the docker way)
 
-implementaions:
+Using docker, first login to the ghcr.io registry:
 
-- implement table output
-- parse response
-- display functions, version commit date etc
-- build for all architectures
+`docker login ghcr.io --username=$GITHUB_USER --password=$GITHUB_REGISTRY_ACCESS_TOKEN`
 
-references:
+and run:
 
-- <https://github.com/lukibahr/go-conbee/>
-- <https://dev.to/plutov/writing-rest-api-client-in-go-3fkg>
+`docker run -it --rm -e DECONZ_API_KEY=$DECONZ_API_KEY -e DECONZ_API_URL=$DECONZ_API_URL ghcr.io/lukibahr/deconz-ctl:1.0.4 switch-on -d 5`
+
+The client is build with cobra.
+
+## Currently implemented functions
+
+- switch on and off a light by device id
+- show version
+
+### Future functions
+
+- get configuration: <http://$DECONZ_GATEWAY/api/$DECONZ_API_KEY/config>
+- list all lights: <http://$DECONZ_GATEWAY.ip/api/$DECONZ_API_KEY/lights> with table output
+- list lights: <http://$DECONZ_GATEWAY/api/$DECONZ_API_KEY/lights/$id>
+
+This bit of software was built while watching cows :cow: at my neighbours farm.
