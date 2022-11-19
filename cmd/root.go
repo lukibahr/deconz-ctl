@@ -77,7 +77,7 @@ func Execute() {
 func init() {
 	cobra.OnInitialize(initLogger)
 	viper.AutomaticEnv()
-	viper.SetEnvPrefix("deconz")
+	viper.SetEnvPrefix("deconz_ctl")
 	rootCmd.PersistentFlags().StringVarP(&deconz_device, "device", "d", viper.GetString("device"), "the device to handle")
 	rootCmd.PersistentFlags().StringVarP(&deconz_api_url, "apiUrl", "u", viper.GetString("api_url"), "the deconz api address")
 	rootCmd.PersistentFlags().StringVarP(&deconz_api_key, "apiKey", "k", viper.GetString("api_key"), "the deconz api key")
@@ -163,7 +163,13 @@ func sendRequest(ctx context.Context, state bool) ([]byte, error) {
 	}
 
 	if deconz_device == "" {
-		log.Fatalf("deconz device to handle is not set. Please specify device by using -d parameter or DECONZ_DEVICE environment variable ")
+		log.Fatalf("deconz device to handle is not set. Please specify device by using -d parameter or DECONZ_CTL_DEVICE environment variable ")
+	}
+	if deconz_api_key == "" {
+		log.Fatalf("deconz api key to handle is not set. Please specify device by using -d parameter or DECONZ_CTL_API_KEY environment variable ")
+	}
+	if deconz_api_url == "" {
+		log.Fatalf("deconz api url to handle is not set. Please specify device by using -d parameter or DECONZ_CTL_API_URL environment variable ")
 	}
 	request_url := fmt.Sprintf("%s/api/%s/lights/%s/state", deconz_api_url, deconz_api_key, deconz_device)
 	req, err := http.NewRequestWithContext(ctx, "PUT", request_url, bytes.NewBuffer(payload))
